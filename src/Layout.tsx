@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Aside from "./Aside";
 import Main from "./Main";
 
-function Layout({ setLocale }) {
+function Layout({ setLocale, children }) {
   const [rtl, setRtl] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
   const [image, setImage] = useState(true);
@@ -39,15 +39,7 @@ function Layout({ setLocale }) {
         handleToggleSidebar={handleToggleSidebar}
         handleCollapsedChange={handleCollapsedChange}
       />
-      <Main
-        image={image}
-        toggled={toggled}
-        collapsed={collapsed}
-        rtl={rtl}
-        handleToggleSidebar={handleToggleSidebar}
-        handleCollapsedChange={handleCollapsedChange}
-        handleImageChange={handleImageChange}
-      />
+      {children}
     </div>
   );
 }

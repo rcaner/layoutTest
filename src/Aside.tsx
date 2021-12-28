@@ -17,10 +17,12 @@ import { IoExtensionPuzzleOutline } from "react-icons/io5";
 import { FiSearch, FiInfo, FiLogOut, FiUser } from "react-icons/fi";
 import { BsCartPlus } from "react-icons/bs";
 import { languages } from "./constants";
-import LanguageSwitcher from "./language/LanguageSwitcher";
+// import LanguageSwitcher from "./language/LanguageSwitcher";
 import { ReactComponent as Notification } from "./assets/notification.svg";
 import { ReactComponent as Satellite } from "./assets/satellite.svg";
-
+import { ReactComponent as IT } from "./assets/it.svg";
+import { ReactComponent as TR } from "./assets/tr.svg";
+import { ReactComponent as UK } from "./assets/uk.svg";
 const Aside = ({
   image,
   collapsed,
@@ -183,105 +185,100 @@ const Aside = ({
       </SidebarContent>
 
       <SidebarFooter>
-        <div
-          style={{
-            padding: "24px 20px"
-          }}
-        >
-          <LanguageSwitcher
-            collapsed={collapsed}
-            languages={languages}
-            langCode={intl.locale}
-            handleChangeLanguage={handleLanguageChange}
-          />
-          <div style={{ position: "relative" }}>
-            <span className="footerIconWrapper">
-              <span
-                style={{
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  display: "block"
-                }}
-              >
+        <div>
+          <Menu iconShape="circle">
+            <SubMenu
+              title={intl.formatMessage({ id: "Language" })}
+              icon={
+                intl.locale === "tr" ? (
+                  <TR className="menuIcons" />
+                ) : intl.locale === "en" ? (
+                  <UK className="menuIcons" />
+                ) : (
+                  <IT className="menuIcons" />
+                )
+              }
+            >
+              {languages.map((l) => {
+                return (
+                  <MenuItem
+                    key={l.code}
+                    onClick={(e: any) => {
+                      handleLanguageChange(l.code);
+                    }}
+                  >
+                    {l.name}
+                  </MenuItem>
+                );
+              })}
+            </SubMenu>
+            <MenuItem
+              icon={
                 <FiInfo
                   className={
                     selectedTab === "User Guide"
                       ? "menuIcons selected"
                       : "menuIcons"
                   }
+                  onClick={(e: any) => {
+                    setSelectedTab("User Guide");
+                  }}
                 />
-              </span>
-            </span>
-            {collapsed ? null : (
-              <span>{intl.formatMessage({ id: "User Guide" })}</span>
-            )}
-          </div>
-          <div style={{ position: "relative" }}>
-            <span className="footerIconWrapper">
-              <span
-                style={{
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  display: "block"
-                }}
-              >
+              }
+            >
+              {" "}
+              {intl.formatMessage({ id: "User Guide" })}
+            </MenuItem>
+            <MenuItem
+              icon={
                 <BsCartPlus
                   className={
                     selectedTab === "Agrovisio Store"
                       ? "menuIcons selected"
                       : "menuIcons"
                   }
-                  color="white"
+                  onClick={(e: any) => {
+                    setSelectedTab("Agrovisio Store");
+                  }}
                 />
-              </span>
-            </span>
-            {collapsed ? null : (
-              <span>{intl.formatMessage({ id: "Agrovisio Store" })}</span>
-            )}
-          </div>
-
-          <div style={{ position: "relative" }}>
-            <span className="footerIconWrapper">
-              <span
-                style={{
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  display: "block"
-                }}
-              >
+              }
+            >
+              {" "}
+              {intl.formatMessage({ id: "Agrovisio Store" })}
+            </MenuItem>
+            <MenuItem
+              icon={
                 <FiUser
                   className={
                     selectedTab === "User" ? "menuIcons selected" : "menuIcons"
                   }
+                  onClick={(e: any) => {
+                    setSelectedTab("User");
+                  }}
                 />
-              </span>
-            </span>
-            {collapsed ? null : (
-              <span>{intl.formatMessage({ id: "User" })}</span>
-            )}
-          </div>
-          <div style={{ position: "relative" }}>
-            <span className="footerIconWrapper">
-              <span
-                style={{
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  display: "block"
-                }}
-              >
+              }
+            >
+              {" "}
+              {intl.formatMessage({ id: "User" })}
+            </MenuItem>
+            <MenuItem
+              icon={
                 <FiLogOut
                   className={
                     selectedTab === "Log Out"
                       ? "menuIcons selected"
                       : "menuIcons"
                   }
+                  onClick={(e: any) => {
+                    setSelectedTab("Log Out");
+                  }}
                 />
-              </span>
-            </span>
-            {collapsed ? null : (
-              <span>{intl.formatMessage({ id: "Log Out" })}</span>
-            )}
-          </div>
+              }
+            >
+              {" "}
+              {intl.formatMessage({ id: "Log Out" })}
+            </MenuItem>
+          </Menu>
         </div>
       </SidebarFooter>
     </ProSidebar>

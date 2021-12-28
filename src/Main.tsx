@@ -2,15 +2,7 @@ import React from "react";
 import { FaBars } from "react-icons/fa";
 import { MapContainer, LayersControl, TileLayer } from "react-leaflet";
 import * as L from "leaflet";
-const Main = ({
-  collapsed,
-  rtl,
-  image,
-  handleToggleSidebar,
-  handleCollapsedChange,
-  handleRtlChange,
-  handleImageChange
-}) => {
+const Main = () => {
   return (
     <main>
       <div className="mapContainer">

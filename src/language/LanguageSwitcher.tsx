@@ -20,7 +20,7 @@ const LanguageSwitcherSelector = (props: IProps) => {
   const options = languages.map((language) => {
     if (language.code !== props.langCode) {
       return (
-        <li onClick={onChange}>
+        <li key={language.code} onClick={onChange}>
           <div data-value={language.code} className={language.code}></div>
         </li>
       );

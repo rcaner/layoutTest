@@ -9,6 +9,7 @@ $icon-bg-color: rgba(255, 255, 255, 0.05);
 $icon-size: 35px;
 $sidebar-width: 270px;
 $sidebar-collapsed-width: 80px;
+$dropdown-spacer: 15px;
 @import '~react-pro-sidebar/dist/scss/styles.scss';
 body {
   margin: 0;
@@ -244,4 +245,27 @@ body {
 
 .selected{
   color: var(--selectedFillColor)
+}
+
+.dropright{
+   &::after {
+    margin-left: 0;
+  }
+}
+
+/* _dropdown.scss:56 */
+.dropright {
+  .dropdown-menu {
+    top: 0;
+    right: auto;
+    left: 100%;
+    margin-top: 0;
+    margin-left: $dropdown-spacer;
+  }
+
+  .dropdown-toggle {
+    &::after {
+      vertical-align: 0;
+    }
+  }
 }
