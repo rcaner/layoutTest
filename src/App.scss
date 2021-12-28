@@ -202,6 +202,10 @@ body {
     color: #000000;
     background: #ffd331;
   }
+  &.green {
+    color: #ffffff;
+    background: #008000;
+  }
 }
 .mapContainer {
   height: 100%;
@@ -233,7 +237,11 @@ body {
 
 .menuIcons {
   color: var(--fillColor);
-  &:focus {
-    color: var(--selectedFillColor)
-  }
+  padding: 5px 0px;
+  width: 100%; 
+  height: auto
+}
+
+.selected{
+  color: var(--selectedFillColor)
 }

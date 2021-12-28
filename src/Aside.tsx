@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useIntl } from "react-intl";
 import {
   ProSidebar,
@@ -9,33 +9,32 @@ import {
   SidebarFooter,
   SidebarContent
 } from "react-pro-sidebar";
-import {
-  FaSatellite,
-  FaList,
-  FaHeart,
-  FaInfo,
-  FaCartPlus,
-  FaUser,
-  FaSignout
-} from "react-icons/fa";
-import { GoSignOut } from "react-icons/go";
-import { GrDocumentPerformance } from "react-icons/gr";
-
+import { FaBars } from "react-icons/fa";
+import { RiWechatLine } from "react-icons/ri";
+import { WiDayCloudyWindy } from "react-icons/wi";
+import { BiTask } from "react-icons/bi";
+import { IoExtensionPuzzleOutline } from "react-icons/io5";
+import { FiSearch, FiInfo, FiLogOut, FiUser } from "react-icons/fi";
+import { BsCartPlus } from "react-icons/bs";
+import { languages } from "./constants";
+import LanguageSwitcher from "./language/LanguageSwitcher";
 import { ReactComponent as Notification } from "./assets/notification.svg";
+import { ReactComponent as Satellite } from "./assets/satellite.svg";
 
 const Aside = ({
   image,
   collapsed,
-  rtl,
   toggled,
   handleToggleSidebar,
-  handleCollapsedChange
+  handleCollapsedChange,
+  handleLanguageChange
 }) => {
   const intl = useIntl();
+  const [selectedTab, setSelectedTab] = useState<string>("Monitoring");
+  const notificationCount = 0;
   return (
     <ProSidebar
       image={false}
-      rtl={rtl}
       collapsed={collapsed}
       toggled={toggled}
       breakPoint="md"
@@ -44,27 +43,16 @@ const Aside = ({
       <SidebarHeader>
         <div
           className="block"
-          style={{ marginTop: "10px", justifyContent: "center" }}
+          style={{
+            marginTop: "10px",
+            paddingLeft: "25px",
+            justifyContent: "left"
+          }}
         >
-          {collapsed === false ? (
-            <span
-              className="fa fa-angle-left"
-              style={{ marginLeft: "0px", color: "white" }}
-              onClick={() => handleCollapsedChange(true)}
-            >
-              Collapse
-            </span>
-          ) : (
-            <span
-              className="fa fa-angle-right"
-              style={{
-                alignItems: "center",
-                marginLeft: "0px",
-                color: "white"
-              }}
-              onClick={() => handleCollapsedChange(false)}
-            />
-          )}
+          <FaBars
+            style={{ marginLeft: "0px", color: "white" }}
+            onClick={() => handleCollapsedChange(!collapsed)}
+          />
         </div>
       </SidebarHeader>
 
@@ -73,81 +61,124 @@ const Aside = ({
           <MenuItem
             icon={
               <Notification
-                className="menuIcons"
+                className={
+                  selectedTab === "Notification"
+                    ? "menuIcons selected"
+                    : "menuIcons"
+                }
                 onClick={(e: any) => {
-                  console.log(e);
+                  setSelectedTab("Notification");
                 }}
               />
             }
-            suffix={<span className="badge red">0</span>}
+            suffix={
+              <span
+                className={`badge ${notificationCount === 0 ? "green" : "red"}`}
+              >
+                {notificationCount}
+              </span>
+            }
           >
-            {intl.formatMessage({ id: "notification" })}
+            {intl.formatMessage({ id: "Notification" })}
           </MenuItem>
           <MenuItem
             icon={
-              <img
-                className="menuIcons"
-                alt="notification"
-                src={"./assets/satellite.svg"}
-                width="30px"
+              <Satellite
+                className={
+                  selectedTab === "Monitoring"
+                    ? "menuIcons selected"
+                    : "menuIcons"
+                }
+                onClick={(e: any) => {
+                  setSelectedTab("Monitoring");
+                }}
               />
             }
           >
             {" "}
-            {intl.formatMessage({ id: "weather" })}
+            {intl.formatMessage({ id: "Monitoring" })}
+          </MenuItem>
+          <SubMenu
+            title={intl.formatMessage({ id: "Weather" })}
+            icon={
+              <WiDayCloudyWindy
+                className={
+                  selectedTab === "Weather" ? "menuIcons selected" : "menuIcons"
+                }
+                onClick={(e: any) => {
+                  setSelectedTab("Weather");
+                }}
+              />
+            }
+          >
+            <MenuItem>{intl.formatMessage({ id: "Forecast" })}</MenuItem>
+            <MenuItem>{intl.formatMessage({ id: "Set Alarms" })}</MenuItem>
+          </SubMenu>
+          <MenuItem
+            icon={
+              <RiWechatLine
+                className={
+                  selectedTab === "AskExpert"
+                    ? "menuIcons selected"
+                    : "menuIcons"
+                }
+                onClick={(e: any) => {
+                  setSelectedTab("AskExpert");
+                }}
+              />
+            }
+          >
+            {" "}
+            {intl.formatMessage({ id: "AskExpert" })}
           </MenuItem>
           <MenuItem
-            icon={<img alt="weather" src={"./assets/Cloud.svg"} width="30px" />}
+            style={{ display: "none" }}
+            icon={
+              <BiTask
+                className={
+                  selectedTab === "Farm Management"
+                    ? "menuIcons selected"
+                    : "menuIcons"
+                }
+                onClick={(e: any) => {
+                  setSelectedTab("Farm Management");
+                }}
+              />
+            }
           >
             {" "}
-            {intl.formatMessage({ id: "weather" })}
+            {intl.formatMessage({ id: "Farm Management" })}
           </MenuItem>
-          <MenuItem color="white" icon={<GrDocumentPerformance />}>
+          <MenuItem
+            icon={
+              <IoExtensionPuzzleOutline
+                className={
+                  selectedTab === "Add-ons" ? "menuIcons selected" : "menuIcons"
+                }
+                onClick={(e: any) => {
+                  setSelectedTab("Add-ons");
+                }}
+              />
+            }
+          >
             {" "}
-            {intl.formatMessage({ id: "weather" })}
+            {intl.formatMessage({ id: "Add-ons" })}
           </MenuItem>
-        </Menu>
-        <Menu iconShape="circle">
-          <SubMenu
-            suffix={<span className="badge yellow">3</span>}
-            title={intl.formatMessage({ id: "withSuffix" })}
-            icon={<FaSatellite />}
+          <MenuItem
+            icon={
+              <FiSearch
+                className={
+                  selectedTab === "Search" ? "menuIcons selected" : "menuIcons"
+                }
+                onClick={(e: any) => {
+                  setSelectedTab("Search");
+                }}
+              />
+            }
           >
-            <MenuItem>{intl.formatMessage({ id: "submenu" })} 1</MenuItem>
-            <MenuItem>{intl.formatMessage({ id: "submenu" })} 2</MenuItem>
-            <MenuItem>{intl.formatMessage({ id: "submenu" })} 3</MenuItem>
-          </SubMenu>
-          <SubMenu
-            prefix={<span className="badge gray">3</span>}
-            title={intl.formatMessage({ id: "withPrefix" })}
-            icon={<FaHeart />}
-          >
-            <MenuItem>{intl.formatMessage({ id: "submenu" })} 1</MenuItem>
-            <MenuItem>{intl.formatMessage({ id: "submenu" })} 2</MenuItem>
-            <MenuItem>{intl.formatMessage({ id: "submenu" })} 3</MenuItem>
-          </SubMenu>
-          <SubMenu
-            title={intl.formatMessage({ id: "multiLevel" })}
-            icon={<FaList />}
-          >
-            <MenuItem>{intl.formatMessage({ id: "submenu" })} 1 </MenuItem>
-            <MenuItem>{intl.formatMessage({ id: "submenu" })} 2 </MenuItem>
-            <SubMenu title={`${intl.formatMessage({ id: "submenu" })} 3`}>
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.1 </MenuItem>
-              <MenuItem>{intl.formatMessage({ id: "submenu" })} 3.2 </MenuItem>
-              <SubMenu title={`${intl.formatMessage({ id: "submenu" })} 3.3`}>
-                <MenuItem>
-                  {intl.formatMessage({ id: "submenu" })} 3.3.1{" "}
-                </MenuItem>
-                <MenuItem>
-                  {intl.formatMessage({ id: "submenu" })} 3.3.2{" "}
-                </MenuItem>
-                <MenuItem>
-                  {intl.formatMessage({ id: "submenu" })} 3.3.3{" "}
-                </MenuItem>
-              </SubMenu>
-            </SubMenu>
-          </SubMenu>
+            {" "}
+            {intl.formatMessage({ id: "Search" })}
+          </MenuItem>
         </Menu>
       </SidebarContent>
 
@@ -157,26 +188,32 @@ const Aside = ({
             padding: "24px 20px"
           }}
         >
+          <LanguageSwitcher
+            collapsed={collapsed}
+            languages={languages}
+            langCode={intl.locale}
+            handleChangeLanguage={handleLanguageChange}
+          />
           <div style={{ position: "relative" }}>
             <span className="footerIconWrapper">
               <span
                 style={{
                   borderRadius: "50%",
                   backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  height: "35px",
-                  width: "35px",
-                  alignItems: "center",
-                  justifyContent: "center",
                   display: "block"
                 }}
               >
-                <FaCartPlus
-                  style={{ width: "100%", height: "100%", padding: "10px" }}
+                <FiInfo
+                  className={
+                    selectedTab === "User Guide"
+                      ? "menuIcons selected"
+                      : "menuIcons"
+                  }
                 />
               </span>
             </span>
             {collapsed ? null : (
-              <span>{intl.formatMessage({ id: "notification" })}</span>
+              <span>{intl.formatMessage({ id: "User Guide" })}</span>
             )}
           </div>
           <div style={{ position: "relative" }}>
@@ -185,20 +222,42 @@ const Aside = ({
                 style={{
                   borderRadius: "50%",
                   backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  height: "35px",
-                  width: "35px",
-                  alignItems: "center",
-                  justifyContent: "center",
                   display: "block"
                 }}
               >
-                <FaInfo
-                  style={{ width: "100%", height: "100%", padding: "10px" }}
+                <BsCartPlus
+                  className={
+                    selectedTab === "Agrovisio Store"
+                      ? "menuIcons selected"
+                      : "menuIcons"
+                  }
+                  color="white"
                 />
               </span>
             </span>
             {collapsed ? null : (
-              <span>{intl.formatMessage({ id: "notification" })}</span>
+              <span>{intl.formatMessage({ id: "Agrovisio Store" })}</span>
+            )}
+          </div>
+
+          <div style={{ position: "relative" }}>
+            <span className="footerIconWrapper">
+              <span
+                style={{
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(255, 255, 255, 0.05)",
+                  display: "block"
+                }}
+              >
+                <FiUser
+                  className={
+                    selectedTab === "User" ? "menuIcons selected" : "menuIcons"
+                  }
+                />
+              </span>
+            </span>
+            {collapsed ? null : (
+              <span>{intl.formatMessage({ id: "User" })}</span>
             )}
           </div>
           <div style={{ position: "relative" }}>
@@ -207,42 +266,20 @@ const Aside = ({
                 style={{
                   borderRadius: "50%",
                   backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  height: "35px",
-                  width: "35px",
-                  alignItems: "center",
-                  justifyContent: "center",
                   display: "block"
                 }}
               >
-                <FaUser
-                  style={{ width: "100%", height: "100%", padding: "10px" }}
+                <FiLogOut
+                  className={
+                    selectedTab === "Log Out"
+                      ? "menuIcons selected"
+                      : "menuIcons"
+                  }
                 />
               </span>
             </span>
             {collapsed ? null : (
-              <span>{intl.formatMessage({ id: "notification" })}</span>
-            )}
-          </div>
-          <div style={{ position: "relative" }}>
-            <span className="footerIconWrapper">
-              <span
-                style={{
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  height: "35px",
-                  width: "35px",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  display: "block"
-                }}
-              >
-                <GoSignOut
-                  style={{ width: "100%", height: "100%", padding: "10px" }}
-                />
-              </span>
-            </span>
-            {collapsed ? null : (
-              <span>{intl.formatMessage({ id: "notification" })}</span>
+              <span>{intl.formatMessage({ id: "Log Out" })}</span>
             )}
           </div>
         </div>

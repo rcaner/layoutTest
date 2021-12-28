@@ -17,9 +17,8 @@ function Layout({ setLocale }) {
     }
   };
 
-  const handleRtlChange = (checked) => {
-    setRtl(checked);
-    setLocale(checked ? "ar" : "en");
+  const handleLanguageChange = (code) => {
+    setLocale(code);
   };
   const handleImageChange = (checked) => {
     setImage(checked);
@@ -36,6 +35,7 @@ function Layout({ setLocale }) {
         collapsed={collapsed}
         rtl={rtl}
         toggled={toggled}
+        handleLanguageChange={handleLanguageChange}
         handleToggleSidebar={handleToggleSidebar}
         handleCollapsedChange={handleCollapsedChange}
       />
@@ -46,7 +46,6 @@ function Layout({ setLocale }) {
         rtl={rtl}
         handleToggleSidebar={handleToggleSidebar}
         handleCollapsedChange={handleCollapsedChange}
-        handleRtlChange={handleRtlChange}
         handleImageChange={handleImageChange}
       />
     </div>
